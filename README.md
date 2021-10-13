@@ -16,24 +16,20 @@ Assuming that you Node.js and NPM installed in that location, in Terminal:
 
 ### Database Setup
 
-If you don't already have MySql, install here
-
+If you don't already have MySql, install here:
 https://dev.mysql.com/downloads/mysql/
 
 If you don't already have MySql Workbench, install here:
+https://www.mysql.com/products/workbench/
 
 
-Open SQL workbench and ensure you can create a new database (choose or add an existing connection. Once you have a connection, add the username and password credentials to `db.js` file.
+Open SQL workbench and ensure you can create a new database (choose or add an existing connection. Once you have a connection, add the username and password credentials to `.env` file.
 ```
-var connection = mysql.createConnection({
-    host:'localhost',
-    user:'<your username here>',
-    password:'<your password here>',
-    database:'my-library'
-});
+MYSQL_USER="<MySQL_username>"
+MYSQL_PASSWORD="<MySQL_password>"
 ```
 
-On MySQL Workbench, lcick the database icon - "Create a new schema" at the top and ake the scema name `my-library` 
+On MySQL Workbench, click the database icon - "Create a new schema" at the top and ake the schema name `quizmanager`
 
 
 ### IDE
