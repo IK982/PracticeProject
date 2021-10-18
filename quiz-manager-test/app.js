@@ -3,9 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+require("dotenv").config()
+var UsersService = require("./services/usersService");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var quizRouter = require('./routes/quiz');
 
 var app = express();
 
@@ -19,8 +22,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+var JwtStrategy = require('passport-jwt').Strategy;
+var passport = require('passport');
+var CookieExtractor = require('./security/cookieExtractor');
+
+app.use(express.static(path.join(__dirname, 'public')));
+// THIS LINE
+app.use(passport.initialize());
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/quiz', quizRouter);
+
+
+// app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -39,3 +54,23 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+// cookie config
+
+// var JwtStrategy = require('passport-jwt').Strategy;
+// var passport = require('passport');
+// var CookieExtractor = require('./security/cookieExtractor');
+
+var opts = {}
+opts.jwtFromRequest = CookieExtractor.cookieExtractor;
+opts.secretOrKey = process.env.AUTH_SECRET;
+
+passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
+    // add the findUser function to get the details for a user given their username
+    UsersService.findUser(jwt_payload['user'].username, function(err, user) {
+        if (err) {
+            return done(err, null);
+        }
+        return done(null, user);
+    });
+}));

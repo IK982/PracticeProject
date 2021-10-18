@@ -1,0 +1,73 @@
+var bcrypt = require('bcrypt');
+var mysql = require('mysql2');
+var db = require('../db');
+
+function hashPassword(password) {
+    const saltRounds = 10;
+    return bcrypt.hashSync(password, saltRounds);
+}
+
+function createUser(user, onSuccess) {
+    var sql = "INSERT INTO `quizmanagertest`.`users`(`id`,`username`,`password`) VALUES(?, ?, ?);"
+    var inserts = [user.id, user.username, hashPassword(user.password)]
+    var preparedSql = mysql.format(sql, inserts);
+    db.query(preparedSql, onSuccess);
+}
+
+// function validateLogin(user) {
+//     var sql = "SELECT `username` FROM `users`;"
+//     if(sql === user.username){}
+
+// }
+
+function validateLogin(user, onSuccess) {
+    var sql = "SELECT * FROM `users` WHERE username = ?";
+    var inserts = [user.username];
+    var preparedSql = mysql.format(sql, inserts);
+    // React to query
+    function onFindingUser(result){
+        if (!result || result.length != 1) {
+            onSuccess(false, null);
+            return;
+        }
+        var passwordCorrect = bcrypt.compareSync(user.password, result[0].password);
+
+        onSuccess(passwordCorrect, result[0]);
+    }
+    db.query(preparedSql, onFindingUser);
+}
+
+// function findUser(user, onSuccess) {
+//     var sql = "SELECT * FROM `users` WHERE username = ?";
+//     var inserts = [user.username];
+//     var preparedSql = mysql.format(sql, inserts);
+
+//     if (result || result.length >= 1) {
+//         onSuccess(user.username, user.password);
+//         return;
+//     }
+
+// }
+
+function findUser(username, onSuccess) {
+    var sql = "SELECT * FROM `users` WHERE username = ?";
+    var inserts = [username];
+    var preparedSql = mysql.format(sql, inserts);
+
+    // React to query
+    function onResult(result) {
+        console.log('This is the result', result)
+        if (user || result.length > 0) {
+            onSuccess(null, user[0])
+        }
+        // else onSuccess("No such user", null)
+        else onSuccess("No such user", null)
+    };
+    db.query(preparedSql, onResult);
+    console.log('End of findUser')
+}
+
+module.exports.hashPassword = hashPassword;
+module.exports.createUser = createUser;
+module.exports.validateLogin = validateLogin;
+module.exports.findUser = findUser;
