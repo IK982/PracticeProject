@@ -14,11 +14,6 @@ function createUser(user, onSuccess) {
     db.query(preparedSql, onSuccess);
 }
 
-// function validateLogin(user) {
-//     var sql = "SELECT `username` FROM `users`;"
-//     if(sql === user.username){}
-
-// }
 
 function validateLogin(user, onSuccess) {
     var sql = "SELECT * FROM `users` WHERE username = ?";
@@ -37,17 +32,6 @@ function validateLogin(user, onSuccess) {
     db.query(preparedSql, onFindingUser);
 }
 
-// function findUser(user, onSuccess) {
-//     var sql = "SELECT * FROM `users` WHERE username = ?";
-//     var inserts = [user.username];
-//     var preparedSql = mysql.format(sql, inserts);
-
-//     if (result || result.length >= 1) {
-//         onSuccess(user.username, user.password);
-//         return;
-//     }
-
-// }
 
 function findUser(username, onSuccess) {
     var sql = "SELECT * FROM `users` WHERE username = ?";
