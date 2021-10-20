@@ -8,8 +8,8 @@ function hashPassword(password) {
 }
 
 function createUser(user, onSuccess) {
-    var sql = "INSERT INTO `quizmanagertest`.`users`(`id`,`username`,`password`) VALUES(?, ?, ?);"
-    var inserts = [user.id, user.username, hashPassword(user.password)]
+    var sql = "INSERT INTO `quizmanagertest`.`users`(`id`,`username`,`password`, `role`) VALUES(?, ?, ?, ?);"
+    var inserts = [user.id, user.username, hashPassword(user.password), user.role]
     var preparedSql = mysql.format(sql, inserts);
     db.query(preparedSql, onSuccess);
 }
