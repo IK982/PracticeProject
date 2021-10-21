@@ -6,7 +6,11 @@ var logger = require('morgan');
 require("dotenv").config()
 var UsersService = require("./services/usersService");
 
-var indexRouter = require('./routes/index');
+// var indexRouter = require('./routes/index');
+// var usersRouter = require('./routes/users');
+// var quizRouter = require('./routes/quiz');
+
+// var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var quizRouter = require('./routes/quiz');
 
@@ -28,10 +32,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(passport.initialize());
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/quiz', quizRouter);
+// app.use('/', indexRouter);
+// app.use('/users', usersRouter);
+// app.use('/quiz', quizRouter);
 
+// app.use('/', indexRouter);
+app.use('/', usersRouter);
+app.use('/quiz', quizRouter);
 
 
 // catch 404 and forward to error handler
