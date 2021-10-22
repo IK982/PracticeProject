@@ -1,6 +1,6 @@
 var restrictedReadAccess = (req, res, next) => {
     if (req.user && req.user.role == 'restricted-read') {
-        res.redirect('/error');
+        res.send('unauthorised');
         return;
     }
     next();

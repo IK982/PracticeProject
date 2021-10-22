@@ -39,7 +39,8 @@ router.post('/', function(req, res, next) {
     }
       const token = jwt.sign({
         user: {
-          username: user.username
+          username: user.username,
+          role: user.role
         }
       },
       // Your secret, e.g. here set by environment variable

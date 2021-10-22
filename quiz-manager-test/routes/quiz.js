@@ -11,7 +11,7 @@ var { adminUser, readAccess, restrictedReadAccess } = require('../security/userA
 //     res.render('quiz/quiz');
 //   });
 
-router.get('/index', passport.authenticate('jwt', { session: false }), adminUser, restrictedReadAccess, readAccess, function(req, res, next) {
+router.get('/index', passport.authenticate('jwt', { session: false }), readAccess, function(req, res, next) {
     res.render('quiz/index');
 });
 
